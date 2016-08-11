@@ -30,9 +30,9 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
 
     Random randomQ;
     Button button_1, button_2, button_3, button_4;
-    TextView data_text;
+    TextView data_text, rigthCount, wrongCount;
     String question, answer1, answer2, answer3, answer4;
-    int rQ, rA2, rA3, rA4, x;
+    int rQ, rA2, rA3, rA4, x, right = 0, wrong = 0;
     int index1, index2, index3, index4;
     String ans1, ans2, ans3, ans4;
     Cursor cursor;
@@ -57,6 +57,8 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
         cursor = myDbHelper.query("translationData", null, null, null, null, null, null);
 
         data_text = (TextView) findViewById(R.id.data_text);
+        rigthCount = (TextView) findViewById(R.id.rigthCount);
+        wrongCount = (TextView) findViewById(R.id.wrongCount);
         button_1 = (Button) findViewById(R.id.button_1);
         button_2 = (Button) findViewById(R.id.button_2);
         button_3 = (Button) findViewById(R.id.button_3);
@@ -316,29 +318,39 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
         x = new Random().nextInt(4);
         switch (v.getId()){
             case R.id.button_1:
-                if (x == 0){WT(cursor);}
-                if (x == 1){WS(cursor);}
-                if (x == 2){TW(cursor);}
-                if (x == 3){SW(cursor);}
+                checkCorrect(ans1);
+                newWord(x);
                 break;
             case R.id.button_2:
-                if (x == 0){WT(cursor);}
-                if (x == 1){WS(cursor);}
-                if (x == 2){TW(cursor);}
-                if (x == 3){SW(cursor);}
+                checkCorrect(ans2);
+                newWord(x);
                 break;
             case R.id.button_3:
-                if (x == 0){WT(cursor);}
-                if (x == 1){WS(cursor);}
-                if (x == 2){TW(cursor);}
-                if (x == 3){SW(cursor);}
+                checkCorrect(ans3);
+                newWord(x);
                 break;
             case R.id.button_4:
-                if (x == 0){WT(cursor);}
-                if (x == 1){WS(cursor);}
-                if (x == 2){TW(cursor);}
-                if (x == 3){SW(cursor);}
+                checkCorrect(ans4);
+                newWord(x);
                 break;
         }
+    }
+
+    private void checkCorrect(String ans){
+        if (ans.equals(answer1)){
+            right++;
+            rigthCount.setText("Right: " + right);
+        }
+        else{
+            wrong++;
+            wrongCount.setText("Wrong: " + wrong);
+        }
+    }
+
+    private void newWord(int x){
+        if (x == 0){WT(cursor);}
+        if (x == 1){WS(cursor);}
+        if (x == 2){TW(cursor);}
+        if (x == 3){SW(cursor);}
     }
 }
