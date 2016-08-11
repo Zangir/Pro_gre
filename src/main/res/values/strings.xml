@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Pro_gre</string>
+    <string name="Play">Play</string>
+    <string name="Achievements">more</string>
+    <string name="Settings">Settings</string>
+    <string name="Quit">Quit</string>
+</resources>
