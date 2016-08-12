@@ -74,94 +74,43 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
 
 
     public void WS (Cursor cursor) {
-        randomQ = new Random();
-        rQ = randomQ.nextInt(50);
-        index1 = randomQ.nextInt(4);
+        randomIndexes();
 
-        do {
-            index2 = randomQ.nextInt(4);
-        } while (index2 == index1);
+        if(cursor != null && cursor.getCount()>0) {
+            cursor.moveToPosition(rQ);
+            question = cursor.getString(1);
+            data_text.setText(question);
+            answer1 = cursor.getString(2);
+            cursor.moveToPosition(rA2);
+            answer2 = cursor.getString(2);
+            cursor.moveToPosition(rA3);
+            answer3 = cursor.getString(2);
+            cursor.moveToPosition(rA4);
+            answer4 = cursor.getString(2);
+            List<String> myList = new ArrayList<String>();
+            myList.add(answer1);
+            myList.add(answer2);
+            myList.add(answer3);
+            myList.add(answer4);
 
-        do {
-            index3 = randomQ.nextInt(4);
-        } while (index3 == index1 || index3 == index2);
+            ans1 = myList.get(index1);
+            ans2 = myList.get(index2);
+            ans3 = myList.get(index3);
+            ans4 = myList.get(index4);
 
-        do {
-            index4 = randomQ.nextInt(4);
-        } while (index4 == index1 || index4 == index2 || index4 == index3);
-
-
-        do {
-            rA2 = randomQ.nextInt(50);
-        } while (rA2 == rQ);
-
-        do {
-            rA3 = randomQ.nextInt(50);
-        } while (rA3 == rQ || rA3 == rA2);
-
-        do {
-            rA4 = randomQ.nextInt(50);
-        } while (rA4 == rQ || rA4 == rA2 || rA4 == rA3);
-            if(cursor != null && cursor.getCount()>0) {
-                cursor.moveToPosition(rQ);
-                question = cursor.getString(1);
-                data_text.setText(question);
-                answer1 = cursor.getString(2);
-                cursor.moveToPosition(rA2);
-                answer2 = cursor.getString(2);
-                cursor.moveToPosition(rA3);
-                answer3 = cursor.getString(2);
-                cursor.moveToPosition(rA4);
-                answer4 = cursor.getString(2);
-                List<String> myList = new ArrayList<String>();
-                myList.add(answer1);
-                myList.add(answer2);
-                myList.add(answer3);
-                myList.add(answer4);
-
-                ans1 = myList.get(index1);
-                ans2 = myList.get(index2);
-                ans3 = myList.get(index3);
-                ans4 = myList.get(index4);
-
-                button_1.setText(ans1);
-                button_2.setText(ans2);
-                button_3.setText(ans3);
-                button_4.setText(ans4);
-            }
+            button_1.setText(ans1);
+            button_2.setText(ans2);
+            button_3.setText(ans3);
+            button_4.setText(ans4);
+        }
     }
 
 
 
     public void WT (Cursor cursor) {
-        randomQ = new Random();
-        rQ = randomQ.nextInt(50);
-        index1 = randomQ.nextInt(4);
 
-        do {
-            index2 = randomQ.nextInt(4);
-        } while (index2 == index1);
+        randomIndexes();
 
-        do {
-            index3 = randomQ.nextInt(4);
-        } while (index3 == index1 || index3 == index2);
-
-        do {
-            index4 = randomQ.nextInt(4);
-        } while (index4 == index1 || index4 == index2 || index4 == index3);
-
-
-        do {
-            rA2 = randomQ.nextInt(50);
-        } while (rA2 == rQ);
-
-        do {
-            rA3 = randomQ.nextInt(50);
-        } while (rA3 == rQ || rA3 == rA2);
-
-        do {
-            rA4 = randomQ.nextInt(50);
-        } while (rA4 == rQ || rA4 == rA2 || rA4 == rA3);
 
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToPosition(rQ);
@@ -196,34 +145,8 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
 
 
     public void TW (Cursor cursor) {
-        randomQ = new Random();
-        rQ = randomQ.nextInt(50);
-        index1 = randomQ.nextInt(4);
+        randomIndexes();
 
-        do {
-            index2 = randomQ.nextInt(4);
-        } while (index2 == index1);
-
-        do {
-            index3 = randomQ.nextInt(4);
-        } while (index3 == index1 || index3 == index2);
-
-        do {
-            index4 = randomQ.nextInt(4);
-        } while (index4 == index1 || index4 == index2 || index4 == index3);
-
-
-        do {
-            rA2 = randomQ.nextInt(50);
-        } while (rA2 == rQ);
-
-        do {
-            rA3 = randomQ.nextInt(50);
-        } while (rA3 == rQ || rA3 == rA2);
-
-        do {
-            rA4 = randomQ.nextInt(50);
-        } while (rA4 == rQ || rA4 == rA2 || rA4 == rA3);
 
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToPosition(rQ);
@@ -255,34 +178,9 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void SW (Cursor cursor) {
-        randomQ = new Random();
-        rQ = randomQ.nextInt(50);
-        index1 = randomQ.nextInt(4);
 
-        do {
-            index2 = randomQ.nextInt(4);
-        } while (index2 == index1);
+        randomIndexes();
 
-        do {
-            index3 = randomQ.nextInt(4);
-        } while (index3 == index1 || index3 == index2);
-
-        do {
-            index4 = randomQ.nextInt(4);
-        } while (index4 == index1 || index4 == index2 || index4 == index3);
-
-
-        do {
-            rA2 = randomQ.nextInt(50);
-        } while (rA2 == rQ);
-
-        do {
-            rA3 = randomQ.nextInt(50);
-        } while (rA3 == rQ || rA3 == rA2);
-
-        do {
-            rA4 = randomQ.nextInt(50);
-        } while (rA4 == rQ || rA4 == rA2 || rA4 == rA3);
         if(cursor != null && cursor.getCount()>0) {
             cursor.moveToPosition(rQ);
             question = cursor.getString(2);
@@ -352,5 +250,38 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
         if (x == 1){WS(cursor);}
         if (x == 2){TW(cursor);}
         if (x == 3){SW(cursor);}
+    }
+
+    private void randomIndexes(){
+        randomQ = new Random();
+
+        index1 = randomQ.nextInt(4);
+
+        do {
+            index2 = randomQ.nextInt(4);
+        } while (index2 == index1);
+
+        do {
+            index3 = randomQ.nextInt(4);
+        } while (index3 == index1 || index3 == index2);
+
+        do {
+            index4 = randomQ.nextInt(4);
+        } while (index4 == index1 || index4 == index2 || index4 == index3);
+
+        rQ = randomQ.nextInt(50);
+
+        do {
+            rA2 = randomQ.nextInt(50);
+        } while (rA2 == rQ);
+
+        do {
+            rA3 = randomQ.nextInt(50);
+        } while (rA3 == rQ || rA3 == rA2);
+
+        do {
+            rA4 = randomQ.nextInt(50);
+        } while (rA4 == rQ || rA4 == rA2 || rA4 == rA3);
+
     }
 }
