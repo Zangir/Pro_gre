@@ -1,44 +1,35 @@
 package com.intelart.pro_gre;
 
-import android.animation.PropertyValuesHolder;
-import android.content.ContentValues;
-import android.content.Context;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.ArraySet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
-public class Play extends AppCompatActivity implements View.OnClickListener {
+public class Play extends AppCompatActivity {
 
+    private final String TAG = "PlayActivityDebug";
 
+    AlertDialog.Builder builder;
     Random randomQ;
     Button button_1, button_2, button_3, button_4;
-    TextView data_text, rigthCount, wrongCount;
-    String question, answer1, answer2, answer3, answer4;
+    TextView data_text, rightCount, wrongCount;
+    String answer;
     int rQ, rA2, rA3, rA4, x = 0, right = 0, wrong = 0;
-    int index1, index2, index3, index4;
-    String ans1, ans2, ans3, ans4;
+    int index1, index2, index3, index4, wordIndex;
     Cursor cursor;
-    ArrayList<ArrayList<String>> allList;
-    ArrayList<String> arrayWT, arrayWS, arrayTW, arraySW;
+    ArrayList<ArrayList<String>> allListQ, allListQUnchanged, allListA, allListAUnchanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,243 +49,236 @@ public class Play extends AppCompatActivity implements View.OnClickListener {
         }
 
         cursor = myDbHelper.query("translationData", null, null, null, null, null, null);
-        initArrays();
+
+
         initUI();
+        initArrays();
 
-        WT(cursor);
+        showWords();
+
     }
 
+    private void showWords() {
+        cursor.moveToPosition(wordIndex);
+        data_text.setText(cursor.getString(1));
+        button_1.setText("Synonim: " + cursor.getString(2));
+        button_2.setText("Translation: " + cursor.getString(4));
+        button_3.setClickable(false);
+        button_4.setClickable(false);
+        wordIndex++;
+        final View.OnClickListener createQuestionsClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.button_1:
+                        checkCorrect(button_1.getText().toString());
+                        createQuestion(cursor);
+                        break;
+                    case R.id.button_2:
+                        checkCorrect(button_2.getText().toString());
+                        createQuestion(cursor);
+                        break;
+                    case R.id.button_3:
+                        checkCorrect(button_3.getText().toString());
+                        createQuestion(cursor);
+                        break;
+                    case R.id.button_4:
+                        checkCorrect(button_4.getText().toString());
+                        createQuestion(cursor);
+                        break;
+                }
+            }
+        };
+        View.OnClickListener showNewWord = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (wordIndex < 4) {
+                    showWords();
+                } else {
+                    button_3.setClickable(true);
+                    button_4.setClickable(true);
+                    button_1.setOnClickListener(createQuestionsClick);
+                    button_2.setOnClickListener(createQuestionsClick);
+                    button_3.setOnClickListener(createQuestionsClick);
+                    button_4.setOnClickListener(createQuestionsClick);
+                    createQuestion(cursor);
+                }
+            }
+        };
+        button_1.setOnClickListener(showNewWord);
+        button_2.setOnClickListener(showNewWord);
+    }
 
-    public void WS (Cursor cursor) {
-        randomIndexes();
-
-        if(cursor != null && cursor.getCount()>0) {
-            cursor.moveToPosition(rQ);
-            question = cursor.getString(1);
-            data_text.setText(question);
-            answer1 = cursor.getString(2);
-            cursor.moveToPosition(rA2);
-            answer2 = cursor.getString(2);
-            cursor.moveToPosition(rA3);
-            answer3 = cursor.getString(2);
-            cursor.moveToPosition(rA4);
-            answer4 = cursor.getString(2);
-
-            setOnButtonText();
-
+    private void createQuestion(Cursor cursor) {
+        if (right==2) {
+            builder.setMessage(Resources.YOU_HAVE_MADE + " " + wrong + " " + Resources.MISTAKES).setPositiveButton(R.string.MainMenu, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Play.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }).setNeutralButton(R.string.Restart, new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Play.this, Play.class);
+                    startActivity(intent);
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-    }
+        else {
 
+            randomQ = new Random();
 
-    public void WT (Cursor cursor) {
-        randomIndexes();
+            int ranNumber = randomQ.nextInt(allListQ.get(x).size());
 
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToPosition(rQ);
-            question = cursor.getString(1);
-            data_text.setText(question);
-            answer1 = cursor.getString(4);
-            cursor.moveToPosition(rA2);
-            answer2 = cursor.getString(4);
-            cursor.moveToPosition(rA3);
-            answer3 = cursor.getString(4);
-            cursor.moveToPosition(rA4);
-            answer4 = cursor.getString(4);
-            setOnButtonText();
+            data_text.setText(allListQ.get(x).get(ranNumber));
+            Log.d(TAG, data_text.getText().toString());
+            answer = allListA.get(x).get(ranNumber);
+            Log.d(TAG, answer);
+
+            index1 = randomQ.nextInt(4);
+
+            do {
+                index2 = randomQ.nextInt(4);
+            } while (index2 == index1);
+
+            do {
+                index3 = randomQ.nextInt(4);
+            } while (index3 == index1 || index3 == index2);
+
+            do {
+                index4 = randomQ.nextInt(4);
+            } while (index4 == index1 || index4 == index2 || index4 == index3);
+
+            button_1.setText(allListAUnchanged.get(x).get(index1));
+            button_2.setText(allListAUnchanged.get(x).get(index2));
+            button_3.setText(allListAUnchanged.get(x).get(index3));
+            button_4.setText(allListAUnchanged.get(x).get(index4));
         }
+
     }
 
-
-
-
-    public void TW (Cursor cursor) {
-        randomIndexes();
-
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToPosition(rQ);
-            question = cursor.getString(4);
-            data_text.setText(question);
-            answer1 = cursor.getString(1);
-            cursor.moveToPosition(rA2);
-            answer2 = cursor.getString(1);
-            cursor.moveToPosition(rA3);
-            answer3 = cursor.getString(1);
-            cursor.moveToPosition(rA4);
-            answer4 = cursor.getString(1);
-
-            setOnButtonText();
-        }
-    }
-
-    public void SW (Cursor cursor) {
-
-        randomIndexes();
-
-        if(cursor != null && cursor.getCount()>0) {
-            cursor.moveToPosition(rQ);
-            question = cursor.getString(2);
-            data_text.setText(question);
-            answer1 = cursor.getString(1);
-            cursor.moveToPosition(rA2);
-            answer2 = cursor.getString(1);
-            cursor.moveToPosition(rA3);
-            answer3 = cursor.getString(1);
-            cursor.moveToPosition(rA4);
-            answer4 = cursor.getString(1);
-
-            setOnButtonText();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        do {
-            x = new Random().nextInt(4);
-        }while(allList.get(x).isEmpty());
-
-        switch (v.getId()){
-            case R.id.button_1:
-                checkCorrect(ans1);
-                newWord(x);
-                break;
-            case R.id.button_2:
-                checkCorrect(ans2);
-                newWord(x);
-                break;
-            case R.id.button_3:
-                checkCorrect(ans3);
-                newWord(x);
-                break;
-            case R.id.button_4:
-                checkCorrect(ans4);
-                newWord(x);
-                break;
-        }
-    }
-
-    private void checkCorrect(String ans){
-        if (ans.equals(answer1)){
+    private void checkCorrect(String ans) {
+        if (ans.equals(answer)) {
             int number;
             right++;
-            rigthCount.setText("Right: " + right);
-            number = allList.get(x).indexOf(answer1);
-            allList.get(x).remove(number);
-        }
-        else{
+            rightCount.setText("Right: " + right);
+            number = allListA.get(x).indexOf(answer);
+            allListQ.get(x).remove(number);
+            allListA.get(x).remove(number);
+        } else {
             wrong++;
             wrongCount.setText("Wrong: " + wrong);
         }
+
+        do {
+            x = new Random().nextInt(4);
+        } while (right!=16 && allListQ.get(x).isEmpty());
     }
 
-    private void newWord(int x){
-        if (x == 0){WT(cursor);}
-        if (x == 1){WS(cursor);}
-        if (x == 2){TW(cursor);}
-        if (x == 3){SW(cursor);}
-    }
-
-    private void randomIndexes(){
-        randomQ = new Random();
-
-        index1 = randomQ.nextInt(4);
-        do {
-            index2 = randomQ.nextInt(4);
-        } while (index2 == index1);
-
-        do {
-            index3 = randomQ.nextInt(4);
-        } while (index3 == index1 || index3 == index2);
-
-        do {
-            index4 = randomQ.nextInt(4);
-        } while (index4 == index1 || index4 == index2 || index4 == index3);
-
-        rQ = randomQ.nextInt(4);
-
-        do {
-            rA2 = randomQ.nextInt(4);
-        } while (rA2 == rQ);
-
-        do {
-            rA3 = randomQ.nextInt(4);
-        } while (rA3 == rQ || rA3 == rA2);
-
-        do {
-            rA4 = randomQ.nextInt(4);
-        } while (rA4 == rQ || rA4 == rA2 || rA4 == rA3);
-
-    }
-
-    private void initUI(){
+    private void initUI() {
 
         data_text = (TextView) findViewById(R.id.data_text);
-        rigthCount = (TextView) findViewById(R.id.rigthCount);
+        rightCount = (TextView) findViewById(R.id.rigthCount);
         wrongCount = (TextView) findViewById(R.id.wrongCount);
         button_1 = (Button) findViewById(R.id.button_1);
         button_2 = (Button) findViewById(R.id.button_2);
         button_3 = (Button) findViewById(R.id.button_3);
         button_4 = (Button) findViewById(R.id.button_4);
-        button_1.setOnClickListener(this);
-        button_2.setOnClickListener(this);
-        button_3.setOnClickListener(this);
-        button_4.setOnClickListener(this);
-
+        builder = new AlertDialog.Builder(Play.this);
     }
 
-    private void initArrays(){
-        allList = new ArrayList<>();
+    private void initArrays() {
+
+        // Answers
+
+        allListA = new ArrayList<>();
 
         //WT
 
-        allList.add( new ArrayList<String>());
-        for (int j = 0; j < 3; j++) {
+        allListA.add(new ArrayList<String>());
+        for (int j = 0; j < 4; j++) {
             cursor.moveToPosition(j);
-            allList.get(0).add(cursor.getString(4));
+            allListA.get(0).add(cursor.getString(4));
         }
 
         //WS
 
-        allList.add( new ArrayList<String>());
-        for (int j = 0; j < 3; j++) {
+        allListA.add(new ArrayList<String>());
+        for (int j = 0; j < 4; j++) {
             cursor.moveToPosition(j);
-            allList.get(1).add(cursor.getString(2));
+            allListA.get(1).add(cursor.getString(2));
         }
 
         //TW
 
-        allList.add( new ArrayList<String>());
-        for (int j = 0; j < 3; j++) {
+        allListA.add(new ArrayList<String>());
+        for (int j = 0; j < 4; j++) {
             cursor.moveToPosition(j);
-            allList.get(2).add(cursor.getString(1));
+            allListA.get(2).add(cursor.getString(1));
         }
 
         //SW
 
-        allList.add( new ArrayList<String>());
-        for (int j = 0; j < 3; j++) {
+        allListA.add(new ArrayList<String>());
+        for (int j = 0; j < 4; j++) {
             cursor.moveToPosition(j);
-            allList.get(3).add(cursor.getString(1));
+            allListA.get(3).add(cursor.getString(1));
+        }
+
+        allListAUnchanged = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            allListAUnchanged.add(new ArrayList<String>());
+            for (int j = 0; j < 4; j++) {
+                allListAUnchanged.get(i).add(allListA.get(i).get(j));
+            }
+        }
+
+        //Questions
+
+        allListQ = new ArrayList<>();
+
+        //WT
+
+        allListQ.add(new ArrayList<String>());
+        for (int i = 0; i < 4; i++) {
+            cursor.moveToPosition(i);
+            allListQ.get(0).add(cursor.getString(1));
+        }
+
+        //WS
+
+        allListQ.add(new ArrayList<String>());
+        for (int i = 0; i < 4; i++) {
+            cursor.moveToPosition(i);
+            allListQ.get(1).add(cursor.getString(1));
+        }
+
+        //TW
+
+        allListQ.add(new ArrayList<String>());
+        for (int i = 0; i < 4; i++) {
+            cursor.moveToPosition(i);
+            allListQ.get(2).add(cursor.getString(4));
+        }
+
+        //SW
+
+        allListQ.add(new ArrayList<String>());
+        for (int i = 0; i < 4; i++) {
+            cursor.moveToPosition(i);
+            allListQ.get(3).add(cursor.getString(2));
+        }
+        allListQUnchanged = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            allListQUnchanged.add(new ArrayList<String>());
+            for (int j = 0; j < 4; j++) {
+                allListQUnchanged.get(i).add(allListQ.get(i).get(j));
+            }
         }
 
     }
-
-    private void setOnButtonText() {
-        List<String> myList = new ArrayList<String>();
-        myList.add(answer1);
-        myList.add(answer2);
-        myList.add(answer3);
-        myList.add(answer4);
-
-        ans1 = myList.get(index1);
-        ans2 = myList.get(index2);
-        ans3 = myList.get(index3);
-        ans4 = myList.get(index4);
-
-        button_1.setText(ans1);
-        button_2.setText(ans2);
-        button_3.setText(ans3);
-        button_4.setText(ans4);
-    }
-
 }

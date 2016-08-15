@@ -4,4 +4,7 @@
     <string name="Achievements">more</string>
     <string name="Settings">Settings</string>
     <string name="Quit">Quit</string>
+    <string name="MainMenu">Main menu</string>
+    <string name="Restart">Restart</string>
+    <string name="action_settings">Settings</string>
 </resources>
