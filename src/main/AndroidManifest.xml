@@ -18,6 +18,7 @@
         <activity android:name=".Play" />
         <activity android:name=".Achievements" />
         <activity android:name=".Settings" />
+        <activity android:name=".SelectGroupActivity"></activity>
     </application>
 
 </manifest>
