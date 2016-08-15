@@ -23,7 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="New Button"
-        android:id="@+id/button_1"
+        android:id="@+id/button_SW1"
         android:layout_below="@+id/data_text"
         android:layout_marginTop="50dp"
         android:layout_alignParentRight="true"
@@ -34,9 +34,9 @@
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button_2"
-        android:layout_below="@+id/button_1"
-        android:layout_alignLeft="@+id/button_1"
-        android:layout_alignStart="@+id/button_1" />
+        android:layout_below="@+id/button_SW1"
+        android:layout_alignLeft="@+id/button_SW1"
+        android:layout_alignStart="@+id/button_SW1" />
 
     <Button
         android:layout_width="fill_parent"

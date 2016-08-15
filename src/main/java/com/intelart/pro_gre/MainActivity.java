@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.play_button:
-                Intent play = new Intent(this, Play.class);
-                startActivity(play);
+                Intent selectGroup = new Intent(this, SelectGroupActivity.class);
+                startActivity(selectGroup);
                 break;
             case R.id.settings_button:
                 Intent settings = new Intent(this, Settings.class);

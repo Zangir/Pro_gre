@@ -70,7 +70,7 @@ public class Play extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.button_1:
+                    case R.id.button_SW1:
                         checkCorrect(button_1.getText().toString());
                         createQuestion(cursor);
                         break;
@@ -183,7 +183,7 @@ public class Play extends AppCompatActivity {
         data_text = (TextView) findViewById(R.id.data_text);
         rightCount = (TextView) findViewById(R.id.rigthCount);
         wrongCount = (TextView) findViewById(R.id.wrongCount);
-        button_1 = (Button) findViewById(R.id.button_1);
+        button_1 = (Button) findViewById(R.id.button_SW1);
         button_2 = (Button) findViewById(R.id.button_2);
         button_3 = (Button) findViewById(R.id.button_3);
         button_4 = (Button) findViewById(R.id.button_4);
