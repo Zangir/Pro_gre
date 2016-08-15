@@ -7,14 +7,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.intelart.pro_gre.Play">
+    tools:context=".PlayActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/data_text"
+        android:id="@+id/data_textPlayActivity"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp" />
@@ -22,9 +21,8 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
         android:id="@+id/button_SW1"
-        android:layout_below="@+id/data_text"
+        android:layout_below="@+id/data_textPlayActivity"
         android:layout_marginTop="50dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -32,8 +30,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button_2"
+        android:id="@+id/button_2PlayActivity"
         android:layout_below="@+id/button_SW1"
         android:layout_alignLeft="@+id/button_SW1"
         android:layout_alignStart="@+id/button_SW1" />
@@ -41,20 +38,18 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button_3"
-        android:layout_below="@+id/button_2"
-        android:layout_alignLeft="@+id/button_2"
-        android:layout_alignStart="@+id/button_2" />
+        android:id="@+id/button_3PlayActivity"
+        android:layout_below="@+id/button_2PlayActivity"
+        android:layout_alignLeft="@+id/button_2PlayActivity"
+        android:layout_alignStart="@+id/button_2PlayActivity" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button_4"
-        android:layout_below="@+id/button_3"
-        android:layout_alignRight="@+id/button_3"
-        android:layout_alignEnd="@+id/button_3" />
+        android:id="@+id/button_4PlayActivity"
+        android:layout_below="@+id/button_3PlayActivity"
+        android:layout_alignRight="@+id/button_3PlayActivity"
+        android:layout_alignEnd="@+id/button_3PlayActivity" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,5 +64,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/wrongCount"
         android:layout_alignParentEnd="true" />
+
+    Chronometer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chronometerPlayActivity"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

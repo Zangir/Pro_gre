@@ -50,7 +50,7 @@ public class SelectWordsActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, Play.class);
+        Intent intent = new Intent(this, PlayActivity.class);
         switch (v.getId()){
             case R.id.button_SW1:
                 intent.putExtra("1", "");

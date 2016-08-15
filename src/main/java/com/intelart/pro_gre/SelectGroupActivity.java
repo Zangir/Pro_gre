@@ -26,7 +26,7 @@ public class SelectGroupActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.play_button:
+            case R.id.button_group1:
                 Intent selectWord = new Intent(this, SelectWordsActivity.class);
                 startActivity(selectWord);
                 break;
