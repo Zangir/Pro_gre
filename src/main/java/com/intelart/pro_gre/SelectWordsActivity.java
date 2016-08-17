@@ -55,6 +55,7 @@ public class SelectWordsActivity extends AppCompatActivity implements View.OnCli
             case R.id.button_SW1:
                 intent.putExtra("1", "");
                 startActivity(intent);
+
                 break;
             case R.id.button_SW2:
                 intent.putExtra("2", "");
