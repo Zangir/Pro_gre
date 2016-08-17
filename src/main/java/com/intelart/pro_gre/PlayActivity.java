@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,16 +20,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
+import java.util.concurrent.CountDownLatch;
 
 public class PlayActivity extends AppCompatActivity {
 
     private final String TAG = "PlayActivityDebug";
 
-    Chronometer timer;
+    CountDownTimer timer;
     AlertDialog.Builder builder;
     Random randomQ;
     Button button_1, button_2, button_3, button_4;
-    TextView data_text, rightCount, wrongCount;
+    TextView data_text, rightCount, wrongCount, timerView;
     String answer;
     int  x = 0, right = 0, wrong = 0;
     int index1, index2, index3, index4, wordIndex, wordsNumber;
@@ -61,10 +63,20 @@ public class PlayActivity extends AppCompatActivity {
         initUI();
         initArrays();
 
-        timer = (Chronometer) findViewById(R.id.chronometerPlayActivity);
-        timer.setFormat("MM:SS");
-        timer.setBase(SystemClock.elapsedRealtime());
-        timer.
+        timer = new CountDownTimer(300000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                String timerText;
+                timerText = millisUntilFinished/60000 + ":" + millisUntilFinished%60000/1000;
+                timerView.setText(timerText);
+            }
+
+            @Override
+            public void onFinish() {
+                finishDialog();
+            }
+        };
+        timer.start();
         showWords();
 
     }
@@ -93,7 +105,7 @@ public class PlayActivity extends AppCompatActivity {
                         checkCorrect(button_3.getText().toString());
                         createQuestion(cursor);
                         break;
-                    case R.id.button_4:
+                    case R.id.button_4PlayActivity:
                         checkCorrect(button_4.getText().toString());
                         createQuestion(cursor);
                         break;
@@ -122,21 +134,8 @@ public class PlayActivity extends AppCompatActivity {
 
     private void createQuestion(Cursor cursor) {
         if (right==2) {
-            builder.setMessage(Resources.YOU_HAVE_MADE + " " + wrong + " " + Resources.MISTAKES).setPositiveButton(R.string.MainMenu, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(PlayActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            }).setNeutralButton(R.string.Restart, new Dialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
-                    startActivity(intent);
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            timer.cancel();
+            finishDialog();
         }
         else {
 
@@ -171,6 +170,24 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
+    private void finishDialog() {
+        builder.setMessage(Resources.YOU_HAVE_MADE + " " + wrong + " " + Resources.MISTAKES).setPositiveButton(R.string.MainMenu, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }).setNeutralButton(R.string.Restart, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
+                startActivity(intent);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private void checkCorrect(String ans) {
         if (ans.equals(answer)) {
             int number;
@@ -194,10 +211,11 @@ public class PlayActivity extends AppCompatActivity {
         data_text = (TextView) findViewById(R.id.data_textPlayActivity);
         rightCount = (TextView) findViewById(R.id.rigthCount);
         wrongCount = (TextView) findViewById(R.id.wrongCount);
+        timerView = (TextView) findViewById(R.id.timerPlayActivity);
         button_1 = (Button) findViewById(R.id.button_SW1);
         button_2 = (Button) findViewById(R.id.button_2PlayActivity);
         button_3 = (Button) findViewById(R.id.button_3PlayActivity);
-        button_4 = (Button) findViewById(R.id.button_4);
+        button_4 = (Button) findViewById(R.id.button_4PlayActivity);
         builder = new AlertDialog.Builder(PlayActivity.this);
     }
 

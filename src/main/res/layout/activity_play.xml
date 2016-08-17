@@ -65,6 +65,13 @@
         android:id="@+id/wrongCount"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timerPlayActivity"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" /><![CDATA[
+
     Chronometer
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,4 +79,5 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
+]]>
 </RelativeLayout>
