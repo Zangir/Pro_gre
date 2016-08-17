@@ -33,7 +33,7 @@ public class PlayActivity extends AppCompatActivity {
     TextView data_text, rightCount, wrongCount, timerView;
     String answer;
     int  x = 0, right = 0, wrong = 0;
-    int index1, index2, index3, index4, wordIndex, wordsNumber;
+    int index1, index2, index3, index4, wordsNumber, extraNumber;
     Cursor cursor;
     ArrayList<ArrayList<String>> allListQ, allListQUnchanged, allListA, allListAUnchanged;
 
@@ -41,8 +41,6 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-
-        
 
         DataBaseHelper myDbHelper = new DataBaseHelper(PlayActivity.this);
         try {
@@ -55,16 +53,25 @@ public class PlayActivity extends AppCompatActivity {
         } catch (SQLException sqle) {
             throw sqle;
         }
-//        wordsNumber = Integer.parseInt(getIntent().getStringExtra(Resources.WORDS_NUMBER_KEY));
 
-        wordsNumber =0;
+
+        extraNumber = Integer.parseInt(getIntent().getStringExtra(Resources.WORDS_NUMBER_KEY));
+        Log.d(TAG, extraNumber+"");
+        wordsNumber = (extraNumber - 1) * 4;
 
         cursor = myDbHelper.query("translationData", null, null, null, null, null, null);
-
 
         initUI();
         initArrays();
 
+
+        setTimer();
+        programButtons();
+        createQuestion();
+
+    }
+
+    private void setTimer() {
         timer = new CountDownTimer(300000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -79,62 +86,40 @@ public class PlayActivity extends AppCompatActivity {
             }
         };
         timer.start();
-        showWords();
-
     }
 
-    private void showWords() {
-        cursor.moveToPosition(wordIndex);
-        data_text.setText(cursor.getString(1));
-        button_1.setText("Synonim: " + cursor.getString(2));
-        button_2.setText("Translation: " + cursor.getString(4));
-        button_3.setClickable(false);
-        button_4.setClickable(false);
-        wordIndex++;
+    private void programButtons() {
         final View.OnClickListener createQuestionsClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.button_SW1:
                         checkCorrect(button_1.getText().toString());
-                        createQuestion(cursor);
+                        createQuestion();
                         break;
                     case R.id.button_2PlayActivity:
                         checkCorrect(button_2.getText().toString());
-                        createQuestion(cursor);
+                        createQuestion();
                         break;
                     case R.id.button_3PlayActivity:
                         checkCorrect(button_3.getText().toString());
-                        createQuestion(cursor);
+                        createQuestion();
                         break;
                     case R.id.button_4PlayActivity:
                         checkCorrect(button_4.getText().toString());
-                        createQuestion(cursor);
+                        createQuestion();
                         break;
                 }
             }
         };
-        View.OnClickListener showNewWord = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (wordIndex < 4) {
-                    showWords();
-                } else {
-                    button_3.setClickable(true);
-                    button_4.setClickable(true);
-                    button_1.setOnClickListener(createQuestionsClick);
-                    button_2.setOnClickListener(createQuestionsClick);
-                    button_3.setOnClickListener(createQuestionsClick);
-                    button_4.setOnClickListener(createQuestionsClick);
-                    createQuestion(cursor);
-                }
-            }
-        };
-        button_1.setOnClickListener(showNewWord);
-        button_2.setOnClickListener(showNewWord);
+
+        button_1.setOnClickListener(createQuestionsClick);
+        button_2.setOnClickListener(createQuestionsClick);
+        button_3.setOnClickListener(createQuestionsClick);
+        button_4.setOnClickListener(createQuestionsClick);
     }
 
-    private void createQuestion(Cursor cursor) {
+    private void createQuestion() {
         if (right==2) {
             timer.cancel();
             finishDialog();
@@ -173,7 +158,21 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void finishDialog() {
-        builder.setMessage(Resources.YOU_HAVE_MADE + " " + wrong + " " + Resources.MISTAKES).setPositiveButton(R.string.MainMenu, new DialogInterface.OnClickListener() {
+
+        if (wrong>5){
+         builder.setMessage(Resources.YOU_HAVE_EXCEED_AMOUNT_OF_MISTAKES);
+        }
+        else {
+            builder.setMessage(Resources.YOU_HAVE_MADE + " " + wrong + " " + Resources.MISTAKES).setNegativeButton(R.string.next_level, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(PlayActivity.this, WordListActivity.class);
+                    intent.putExtra(Resources.WORDS_NUMBER_KEY, extraNumber+1+"");
+                    startActivity(intent);
+                }
+            });
+        }
+        builder.setPositiveButton(R.string.MainMenu, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(PlayActivity.this, MainActivity.class);
@@ -183,6 +182,7 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, extraNumber+"");
                 startActivity(intent);
             }
         });
@@ -231,7 +231,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListA.add(new ArrayList<String>());
         for (int j = 0; j < 4; j++) {
-            cursor.moveToPosition(wordsNumber*4+j);
+            cursor.moveToPosition(wordsNumber+j);
             allListA.get(0).add(cursor.getString(4));
         }
 
@@ -239,7 +239,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListA.add(new ArrayList<String>());
         for (int j = 0; j < 4; j++) {
-            cursor.moveToPosition(wordsNumber*4+j);
+            cursor.moveToPosition(wordsNumber+j);
             allListA.get(1).add(cursor.getString(2));
         }
 
@@ -247,7 +247,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListA.add(new ArrayList<String>());
         for (int j = 0; j < 4; j++) {
-            cursor.moveToPosition(wordsNumber*4+j);
+            cursor.moveToPosition(wordsNumber+j);
             allListA.get(2).add(cursor.getString(1));
         }
 
@@ -255,7 +255,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListA.add(new ArrayList<String>());
         for (int j = 0; j < 4; j++) {
-            cursor.moveToPosition(wordsNumber*4+j);
+            cursor.moveToPosition(wordsNumber+j);
             allListA.get(3).add(cursor.getString(1));
         }
 
@@ -275,7 +275,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListQ.add(new ArrayList<String>());
         for (int i = 0; i < 4; i++) {
-            cursor.moveToPosition(wordsNumber*4+i);
+            cursor.moveToPosition(wordsNumber+i);
             allListQ.get(0).add(cursor.getString(1));
         }
 
@@ -283,7 +283,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListQ.add(new ArrayList<String>());
         for (int i = 0; i < 4; i++) {
-            cursor.moveToPosition(wordsNumber*4+i);
+            cursor.moveToPosition(wordsNumber+i);
             allListQ.get(1).add(cursor.getString(1));
         }
 
@@ -291,7 +291,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListQ.add(new ArrayList<String>());
         for (int i = 0; i < 4; i++) {
-            cursor.moveToPosition(wordsNumber*4+i);
+            cursor.moveToPosition(wordsNumber+i);
             allListQ.get(2).add(cursor.getString(4));
         }
 
@@ -299,7 +299,7 @@ public class PlayActivity extends AppCompatActivity {
 
         allListQ.add(new ArrayList<String>());
         for (int i = 0; i < 4; i++) {
-            cursor.moveToPosition(wordsNumber*4+i);
+            cursor.moveToPosition(wordsNumber+i);
             allListQ.get(3).add(cursor.getString(2));
         }
         allListQUnchanged = new ArrayList<>();

@@ -50,12 +50,11 @@ public class SelectWordsActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, PlayActivity.class);
+        Intent intent = new Intent(this, WordListActivity.class);
         switch (v.getId()){
             case R.id.button_SW1:
                 intent.putExtra(Resources.WORDS_NUMBER_KEY, "1");
                 startActivity(intent);
-
                 break;
             case R.id.button_SW2:
                 intent.putExtra(Resources.WORDS_NUMBER_KEY, "2");

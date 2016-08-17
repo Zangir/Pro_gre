@@ -20,7 +20,8 @@
         <activity android:name=".Settings" />
         <activity android:name=".SelectGroupActivity" />
         <activity android:name=".SelectWordsActivity" />
-        <activity android:name=".DefinitionActivity"></activity>
+        <activity android:name=".DefinitionActivity" />
+        <activity android:name=".WordListActivity"></activity>
     </application>
 
 </manifest>

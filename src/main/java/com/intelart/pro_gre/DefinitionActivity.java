@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 public class DefinitionActivity extends AppCompatActivity {
 
+    private final String TAG = "PlayActivityDebug";
+
     int wordsNumber;
 
     @Override
@@ -12,7 +14,7 @@ public class DefinitionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_definition);
 
-//        wordsNumber = Integer.parseInt(getIntent().getStringExtra(Resources.WORDS_NUMBER_KEY));
+        wordsNumber = Integer.parseInt(getIntent().getStringExtra(Resources.WORDS_NUMBER_KEY));
         wordsNumber = 0;
 
 

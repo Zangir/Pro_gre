@@ -9,5 +9,6 @@ public class Resources {
 
     //OTHER STRINGS
     public static final String YOU_HAVE_MADE = "You have made";
+    public static final String YOU_HAVE_EXCEED_AMOUNT_OF_MISTAKES = "You have exceed amount of mistakes. 5 mistakes are permitted.";
     public static final String MISTAKES = "mistakes";
 }
