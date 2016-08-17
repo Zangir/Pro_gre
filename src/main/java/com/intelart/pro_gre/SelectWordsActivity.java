@@ -53,44 +53,44 @@ public class SelectWordsActivity extends AppCompatActivity implements View.OnCli
         Intent intent = new Intent(this, PlayActivity.class);
         switch (v.getId()){
             case R.id.button_SW1:
-                intent.putExtra("1", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "1");
                 startActivity(intent);
 
                 break;
             case R.id.button_SW2:
-                intent.putExtra("2", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "2");
                 startActivity(intent);
                 break;
             case R.id.button_SW3:
-                intent.putExtra("3", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "3");
                 startActivity(intent);
                 break;
             case R.id.button_SW4:
-                intent.putExtra("4", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "4");
                 startActivity(intent);
                 break;
             case R.id.button_SW5:
-                intent.putExtra("5", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "5");
                 startActivity(intent);
                 break;
             case R.id.button_SW6:
-                intent.putExtra("6", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "6");
                 startActivity(intent);
                 break;
             case R.id.button_SW7:
-                intent.putExtra("7", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "7");
                 startActivity(intent);
                 break;
             case R.id.button_SW8:
-                intent.putExtra("8", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "8");
                 startActivity(intent);
                 break;
             case R.id.button_SW9:
-                intent.putExtra("9", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "9");
                 startActivity(intent);
                 break;
             case R.id.button_SW10:
-                intent.putExtra("10", "");
+                intent.putExtra(Resources.WORDS_NUMBER_KEY, "10");
                 startActivity(intent);
                 break;
         }
