@@ -120,7 +120,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void createQuestion() {
-        if (right==2) {
+        if (right==16) {
             timer.cancel();
             finishDialog();
         }
